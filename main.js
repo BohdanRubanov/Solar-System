@@ -1,5 +1,5 @@
-import * as THREE from "three"
-
+import * as THREE from "three";
+import { planetsData } from "./planetsData";
 $(() => {
 	const scene = new THREE.Scene();
 	const camera = new THREE.PerspectiveCamera(
@@ -56,7 +56,7 @@ $(() => {
 			new THREE.Float32BufferAttribute(positions, 3),
 		);
 		const material = new THREE.PointsMaterial({
-			color: "rgb(18, 56, 226)",
+			color: "rgb(190, 191, 193)",
 			size: 0.5,
 		});
 		const points = new THREE.Points(geometry, material);
@@ -290,165 +290,7 @@ $(() => {
 
 	const loader = new THREE.TextureLoader();
 
-	const planetsData = [
-		{
-			name: "Mercury",
-			size: 1,
-			dist: 20,
-			speed: 0.04,
-			spin: 0.002,
-			texture: "textures/2k_mercury.jpg",
-			color: 0x8c7853,
-			info: {
-				type: "Terrestrial Planet",
-				diameter: "4,879 km",
-				mass: "3.3 × 10^23 kg",
-				distanceFromSun: "57.9 million km",
-				orbitalPeriod: "88 days",
-				temperature: "-173°C to 427°C",
-				moons: "0",
-				description: "Mercury is the smallest and closest planet to the Sun.",
-			},
-		},
-		{
-			name: "Venus",
-			size: 1.5,
-			dist: 28,
-			speed: 0.03,
-			spin: 0.001,
-			texture: "textures/2k_venus_atmosphere.jpg",
-			color: 0xe39e54,
-			info: {
-				type: "Terrestrial Planet",
-				diameter: "12,104 km",
-				mass: "4.87 × 10^24 kg",
-				distanceFromSun: "108.2 million km",
-				orbitalPeriod: "225 days",
-				temperature: "462°C",
-				moons: "0",
-				description:
-					"Venus is the second planet from the Sun, known for its extreme greenhouse effect.",
-			},
-		},
-		{
-			name: "Earth",
-			size: 2,
-			dist: 38,
-			speed: 0.02,
-			spin: 0.02,
-			texture: "textures/earth_atmos_2048.jpg",
-			color: 0x6b93d6,
-			info: {
-				type: "Terrestrial Planet",
-				diameter: "12,742 km",
-				mass: "5.97 × 10^24 kg",
-				distanceFromSun: "149.6 million km",
-				orbitalPeriod: "365.25 days",
-				temperature: "-88°C to 58°C",
-				moons: "1 (Moon)",
-				description:
-					"Earth is the third planet from the Sun and the only known planet with life.",
-			},
-		},
-		{
-			name: "Mars",
-			size: 1.5,
-			dist: 48,
-			speed: 0.018,
-			spin: 0.018,
-			texture: "textures/2k_mars.jpg",
-			color: 0xcd5c5c,
-			info: {
-				type: "Terrestrial Planet",
-				diameter: "6,779 km",
-				mass: "6.42 × 10^23 kg",
-				distanceFromSun: "227.9 million km",
-				orbitalPeriod: "687 days",
-				temperature: "-87°C to -5°C",
-				moons: "2 (Phobos, Deimos)",
-				description: "Mars is the fourth planet, known as the 'Red Planet'.",
-			},
-		},
-		{
-			name: "Jupiter",
-			size: 4,
-			dist: 70,
-			speed: 0.01,
-			spin: 0.03,
-			texture: "textures/2k_jupiter.jpg",
-			color: 0xd8ca9d,
-			info: {
-				type: "Gas Giant",
-				diameter: "139,820 km",
-				mass: "1.90 × 10^27 kg",
-				distanceFromSun: "778.5 million km",
-				orbitalPeriod: "11.9 years",
-				temperature: "-108°C",
-				moons: "79+",
-				description:
-					"Jupiter is the largest planet in the Solar System, a gas giant.",
-			},
-		},
-		{
-			name: "Saturn",
-			size: 3.5,
-			dist: 90,
-			speed: 0.008,
-			spin: 0.025,
-			texture: "textures/2k_saturn.jpg",
-			color: 0xe3d9b0,
-			info: {
-				type: "Gas Giant",
-				diameter: "116,460 km",
-				mass: "5.68 × 10^26 kg",
-				distanceFromSun: "1.43 billion km",
-				orbitalPeriod: "29.5 years",
-				temperature: "-139°C",
-				moons: "82+",
-				description:
-					"Saturn is the sixth planet, famous for its spectacular ring system.",
-			},
-		},
-		{
-			name: "Uranus",
-			size: 2.5,
-			dist: 115,
-			speed: 0.006,
-			spin: 0.015,
-			texture: "textures/2k_uranus.jpg",
-			color: 0x4fd0e7,
-			info: {
-				type: "Ice Giant",
-				diameter: "50,724 km",
-				mass: "8.68 × 10^25 kg",
-				distanceFromSun: "2.87 billion km",
-				orbitalPeriod: "84 years",
-				temperature: "-197°C",
-				moons: "27",
-				description: "Uranus is the seventh planet, rotating on its side.",
-			},
-		},
-		{
-			name: "Neptune",
-			size: 2.3,
-			dist: 135,
-			speed: 0.005,
-			spin: 0.014,
-			texture: "textures/2k_neptune.jpg",
-			color: 0x4b70dd,
-			info: {
-				type: "Ice Giant",
-				diameter: "49,244 km",
-				mass: "1.02 × 10^26 kg",
-				distanceFromSun: "4.5 billion km",
-				orbitalPeriod: "165 years",
-				temperature: "-201°C",
-				moons: "14",
-				description:
-					"Neptune is the eighth and farthest known planet from the Sun.",
-			},
-		},
-	];
+	
 
 	const planets = [];
 
@@ -471,6 +313,58 @@ $(() => {
 		return glow;
 	}
 
+	function createSaturnRings(planet, planetSize) {
+		const ringSegments = 64;
+
+		const ringConfigs = [
+			{
+				inner: planetSize * 1.5,
+				outer: planetSize * 2,
+				color: "rgb(70, 60, 50)",
+				opacity: 0.7,
+			},
+			{
+				inner: planetSize * 2.1,
+				outer: planetSize * 2.6,
+				color: "rgb(220, 200, 150)",
+				opacity: 0.6,
+			},
+			{
+				inner: planetSize * 2.7,
+				outer: planetSize * 3.1,
+				color: "rgb(120, 110, 85)",
+				opacity: 0.5,
+			},
+		];
+
+		const rings = [];
+
+		ringConfigs.forEach((config, index) => {
+			const ringGeometry = new THREE.RingGeometry(
+				config.inner,
+				config.outer,
+				ringSegments,
+			);
+
+			ringGeometry.rotateX(Math.PI / 2);
+
+			const ringMaterial = new THREE.MeshBasicMaterial({
+				color: config.color,
+				side: THREE.DoubleSide,
+				transparent: true,
+				opacity: config.opacity,
+			});
+
+			const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+
+			ring.position.y = 0.1 * (index - 1);
+			planet.add(ring);
+			rings.push(ring);
+		});
+
+		return rings;
+	}
+
 	function showPlanetInfo(planetData) {
 		const info = planetData.info;
 		const html = `
@@ -488,12 +382,41 @@ $(() => {
     `;
 		$info.html(html).fadeIn(200);
 	}
+
 	function hidePlanetInfo() {
 		$info.fadeOut(150);
 		hoveredPlanet = null;
 	}
 
-	if (typeof planetsData !== "undefined") {
+	function loadPlanetTextures(textureUrls) {
+		return textureUrls.map((url) => loader.load(url));
+	}
+
+	function createAnimatedPlanetMaterial(textures, frameRate = 5) {
+		return {
+			textures: textures,
+			currentFrame: 0,
+			frameRate: frameRate,
+			frameCounter: 0,
+			material: new THREE.MeshBasicMaterial({ map: textures[0] }),
+		};
+	}
+
+	function updateTextureAnimation(animatedMaterial, deltaTime) {
+		animatedMaterial.frameCounter += deltaTime;
+		const frameDuration = 1 / animatedMaterial.frameRate;
+
+		if (animatedMaterial.frameCounter >= frameDuration) {
+			animatedMaterial.frameCounter = 0;
+			animatedMaterial.currentFrame =
+				(animatedMaterial.currentFrame + 1) % animatedMaterial.textures.length;
+			animatedMaterial.material.map =
+				animatedMaterial.textures[animatedMaterial.currentFrame];
+			animatedMaterial.material.needsUpdate = true;
+		}
+	}
+
+	if (planetsData) {
 		planetsData.forEach((planetData) => {
 			const points = [];
 			for (let count = 0; count <= 128; count++) {
@@ -515,17 +438,32 @@ $(() => {
 			const orbit = new THREE.Line(orbitGeometry, orbitMaterial);
 			scene.add(orbit);
 
+			const planetTextures = loadPlanetTextures(planetData.textures);
+
+			const animatedMaterial = createAnimatedPlanetMaterial(
+				planetTextures,
+				0.2,
+			);
+
 			const planet = new THREE.Mesh(
 				new THREE.SphereGeometry(planetData.size, 64, 64),
-				new THREE.MeshBasicMaterial({ map: loader.load(planetData.texture) }),
+				animatedMaterial.material,
 			);
 			planet.position.x = planetData.dist;
+
 			planet.userData = {
 				name: planetData.name,
 				info: planetData.info,
 				glow: null,
 				isPlanet: true,
+				animatedMaterial: animatedMaterial,
+				rings: [],
 			};
+
+			if (planetData.name === "Saturn") {
+				const rings = createSaturnRings(planet, planetData.size);
+				planet.userData.rings = rings;
+			}
 
 			const glow = createPlanetGlow(planet, planetData.size, planetData.color);
 			planet.userData.glow = glow;
@@ -534,7 +472,13 @@ $(() => {
 			system.add(planet);
 			scene.add(system);
 
-			planets.push({ system, mesh: planet, ...planetData, glow });
+			planets.push({
+				system,
+				mesh: planet,
+				...planetData,
+				glow,
+				animatedMaterial: animatedMaterial,
+			});
 		});
 	}
 
@@ -552,7 +496,7 @@ $(() => {
 	}
 
 	const $panel = $("#ui-panel");
-	if (typeof planetsData !== "undefined") {
+	if (planetsData) {
 		planetsData.forEach((planet) => {
 			const $btn = $("<button>")
 				.text(planet.name)
@@ -569,8 +513,14 @@ $(() => {
 	$panel.append($sunBtn);
 
 	let time = 0;
-	function animate() {
+	let lastTime = 0;
+
+	function animate(currentTime = 0) {
 		requestAnimationFrame(animate);
+
+		const deltaTime = lastTime ? (currentTime - lastTime) / 1000 : 0;
+		lastTime = currentTime;
+
 		time += 0.01;
 
 		raycaster.setFromCamera(mouse, camera);
@@ -616,6 +566,16 @@ $(() => {
 		planets.forEach((planet) => {
 			if (planet.glow && planet.glow.material.uniforms) {
 				planet.glow.material.uniforms.time.value = time;
+			}
+
+			if (planet.animatedMaterial) {
+				updateTextureAnimation(planet.animatedMaterial, deltaTime);
+			}
+
+			if (planet.name === "Saturn" && planet.mesh.userData.rings) {
+				planet.mesh.userData.rings.forEach((ring) => {
+					ring.rotation.z += 0.00009;
+				});
 			}
 		});
 
@@ -667,13 +627,6 @@ $(() => {
 		const isInsideSun = targetZ < 1;
 		sunParts.forEach((p) => {
 			p.visible = isInsideSun;
-		});
-
-		planets.forEach((planet) => {
-			planet.mesh.visible = !isInsideSun;
-			planet.system.children.forEach((child) => {
-				if (child !== planet.mesh) child.visible = !isInsideSun;
-			});
 		});
 
 		if (focusedPlanet) {
